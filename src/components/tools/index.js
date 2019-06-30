@@ -1,78 +1,63 @@
-import React from "react";
+import React, { Component } from "react";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import ToolsActions from "../../store/ducks/tools";
 import {
   Container,
-  ToolsActions,
+  ToolsContainerAction,
   ToolsList,
   TitleList,
   TagList
 } from "./styles";
 
-export default function tools() {
-  return (
-    <Container>
-      <h2>Very Useful Tools to Remember</h2>
-      <ToolsActions>
-        <div>
-          <input type="text" placeholder="search" name="searchTerm" />
-          <input type="checkbox" name="searchTags" />
-          search in tags only
-        </div>
-        <button type="button">Add</button>
-      </ToolsActions>
-      <ToolsList>
-        <li>
-          <TitleList>
-            <a href="">Notion</a>
-            <button type="button">remover</button>
-          </TitleList>
-          <p>
-            All in one tool to organize teams and ideas. Write plan, collaborate
-            and get organized
-          </p>
-          <TagList>
-            <li>#organization</li>
-            <li>#planning</li>
-            <li>#collaboration</li>
-            <li>#writting</li>
-            <li>#calendar</li>
-          </TagList>
-        </li>
-        <li>
-          <TitleList>
-            <a href="">Notion</a>
-            <button type="button">remover</button>
-          </TitleList>
-          <p>
-            All in one tool to organize teams and ideas. Write plan, collaborate
-            and get organized
-          </p>
-          <TagList>
-            <li>#organization</li>
-            <li>#planning</li>
-            <li>#collaboration</li>
-            <li>#writting</li>
-            <li>#calendar</li>
-          </TagList>
-        </li>
-        <li>
-          <TitleList>
-            <a href="">Notion</a>
-            <button type="button">remover</button>
-          </TitleList>
-          <p>
-            All in one tool to organize teams and ideas. Write plan, collaborate
-            and get organized
-          </p>
-          <TagList>
-            <li>#organization</li>
-            <li>#planning</li>
-            <li>#collaboration</li>
-            <li>#writting</li>
-            <li>#calendar</li>
-          </TagList>
-        </li>
-      </ToolsList>
-    </Container>
-  );
+export class Tools extends Component {
+  componentDidMount() {
+    const { getToolsRequest } = this.props;
+    getToolsRequest();
+  }
+  render() {
+    const { tools } = this.props;
+    return (
+      <Container>
+        <h2>Very Useful Tools to Remember</h2>
+        <ToolsContainerAction>
+          <div>
+            <input type="text" placeholder="search" name="searchTerm" />
+            <input type="checkbox" name="searchTags" />
+            search in tags only
+          </div>
+          <button type="button">Add</button>
+        </ToolsContainerAction>
+        <ToolsList>
+          {tools.data.map(tool => (
+            <li key={tool.id}>
+              <TitleList>
+                <a href={tool.link} target="_blank">
+                  {tool.title}
+                </a>
+                <button type="button">remover</button>
+              </TitleList>
+              <p>{tool.description}</p>
+              <TagList>
+                {tool.tags.map(tag => (
+                  <li>#{tag}</li>
+                ))}
+              </TagList>
+            </li>
+          ))}
+        </ToolsList>
+      </Container>
+    );
+  }
 }
+const mapStateToProps = state => ({
+  tools: state.tools
+});
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(ToolsActions, dispatch);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Tools);

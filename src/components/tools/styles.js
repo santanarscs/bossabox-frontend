@@ -3,14 +3,15 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
+  padding: 30px;
+
   h2 {
     font-size: 36px;
     line-height: 40px;
     margin-bottom: 20px;
   }
 `;
-export const ToolsActions = styled.div`
+export const ToolsContainerAction = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,7 +54,7 @@ export const ToolsList = styled.ul`
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
-    box-shadow: 0 5px 7px rgba(0,0,0, 0.5)
+    box-shadow: 0 5px 7px rgba(0, 0, 0, 0.5);
     &:last-child {
       margin-bottom: 0;
     }
