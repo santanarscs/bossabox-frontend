@@ -1,10 +1,15 @@
 import React from "react";
-
+import GlobalStyles from "./styles/global";
+import { Container } from "./styles";
+import Tools from "./components/tools";
 function App() {
   return (
-    <div className="App">
-      <h1>Ola mundo</h1>
-    </div>
+    <>
+      <GlobalStyles />
+      <Container>
+        <Tools />
+      </Container>
+    </>
   );
 }
 
