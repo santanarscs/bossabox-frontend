@@ -16,6 +16,7 @@ import {
 
 export class Tools extends Component {
   static propTypes = {
+    createToolRequest: PropTypes.func.isRequired,
     openToolModal: PropTypes.func.isRequired,
     closeToolModal: PropTypes.func.isRequired,
     getToolsRequest: PropTypes.func.isRequired,
@@ -32,12 +33,32 @@ export class Tools extends Component {
       toolModalOpen: PropTypes.bool
     }).isRequired
   };
+  state = {
+    newTool: {
+      title: "",
+      link: "",
+      description: "",
+      tags: ""
+    }
+  };
   componentDidMount() {
     const { getToolsRequest } = this.props;
     getToolsRequest();
   }
+  handleInputChange = e => {
+    this.setState({
+      newTool: { ...this.state.newTool, [e.target.name]: e.target.value }
+    });
+  };
+  handleCreateTool = e => {
+    e.preventDefault();
+    const { createToolRequest } = this.props;
+    const { newTool } = this.state;
+    createToolRequest(newTool);
+  };
   render() {
     const { tools, openToolModal, closeToolModal } = this.props;
+    const { newTool } = this.state;
     return (
       <Container>
         <h2>Very Useful Tools to Remember</h2>
@@ -55,9 +76,7 @@ export class Tools extends Component {
           {tools.data.map(tool => (
             <li key={tool.id}>
               <TitleList>
-                <a href={tool.link} target="_blank">
-                  {tool.title}
-                </a>
+                <a href={tool.link}>{tool.title}</a>
                 <button type="button">remover</button>
               </TitleList>
               <p>{tool.description}</p>
@@ -72,15 +91,36 @@ export class Tools extends Component {
         {tools.toolModalOpen && (
           <Modal>
             <h1>Add new tool </h1>
-            <form>
+            <form onSubmit={this.handleCreateTool}>
               <span>Tool Name</span>
-              <input type="text" />
+              <input
+                type="text"
+                name="title"
+                value={newTool.title}
+                onChange={this.handleInputChange}
+              />
               <span>Tool Link</span>
-              <input type="text" />
+              <input
+                type="text"
+                name="link"
+                value={newTool.link}
+                onChange={this.handleInputChange}
+              />
               <span>Tool description</span>
-              <textarea cols="30" rows="5" />
+              <textarea
+                cols="30"
+                rows="5"
+                name="description"
+                value={newTool.description}
+                onChange={this.handleInputChange}
+              />
               <span>Tags</span>
-              <input type="text" />
+              <input
+                type="text"
+                name="tags"
+                value={newTool.tags}
+                onChange={this.handleInputChange}
+              />
               <div>
                 <button type="button" onClick={closeToolModal}>
                   Fechar

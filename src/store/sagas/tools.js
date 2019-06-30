@@ -6,3 +6,15 @@ export function* getTools() {
   const response = yield call(api.get, "/tools");
   yield put(ToolsActions.getToolsSuccess(response.data));
 }
+
+export function* createTool({ tool }) {
+  try {
+    const tags = tool.tags.split(" ").filter(tag => tag !== "");
+    const newTool = { ...tool, tags };
+    const response = yield call(api.post, "tools", newTool);
+    yield put(ToolsActions.createToolSuccess(response.data));
+    yield put(ToolsActions.closeToolModal());
+  } catch (err) {
+    console.log(err);
+  }
+}

@@ -54,7 +54,7 @@ export const ToolsList = styled.ul`
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 5px;
-    box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.2);
     &:last-child {
       margin-bottom: 0;
     }
