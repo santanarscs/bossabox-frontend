@@ -26,7 +26,7 @@ const store = mockStore(INITIAL_STATE);
 import Tools from '../../components/Tools';
 
 describe('Tools Component', () => {
-	it('should render title component', () => {
+	it('should render title', () => {
 		const wrapper = mount(
 			<Provider store={store}>
 				<Tools />
@@ -34,4 +34,31 @@ describe('Tools Component', () => {
 		);
 		expect(wrapper.find('h1').exists()).toBe(true);
 	});
+	it('should render subtitle', () => {
+		const wrapper = mount(
+			<Provider store={store}>
+				<Tools />
+			</Provider>
+		);
+		expect(wrapper.find('h2').exists()).toBe(true);
+	});
+	it('should render input search and input checkbox tag', () => {
+		const wrapper = mount(
+			<Provider store={store}>
+				<Tools />
+			</Provider>
+		);
+		expect(wrapper.find('input[name="term"]').exists()).toBe(true);
+		expect(wrapper.find('input[type="checkbox"][name="tagsOnly"]').exists()).toBe(true);
+	});
+	it('should render button add tools', () => {
+		const wrapper = mount(
+			<Provider store={store}>
+				<Tools />
+			</Provider>
+		);
+		console.log(wrapper.find('h1'));
+		// expect(wrapper.find('button[type="button"]').contains('Add')).toBe(true);
+	});
+	xit('should render list tools', () => {});
 });
