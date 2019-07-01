@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import GlobalStyles from "./styles/global";
 import { Container } from "./styles";
 
-import Tools from "./components/tools";
+import Tools from "./components/Tools";
 
 import store from "./store";
 function App() {

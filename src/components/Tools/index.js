@@ -91,6 +91,7 @@ export class Tools extends Component {
 		const { newTool, openModalConfirm, removeTool, search } = this.state;
 		return (
 			<Container>
+				<h1>VUTTR</h1>
 				<h2>Very Useful Tools to Remember</h2>
 				<ToolsContainerAction>
 					<div>
