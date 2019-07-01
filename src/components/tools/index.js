@@ -9,7 +9,7 @@ import ToolsActions from '../../store/ducks/tools';
 import { Container, ToolsContainerAction, ToolsList, TitleList, TagList, NewToolForm, ConfirmContent } from './styles';
 
 import Button from '../../styles/components/Button';
-
+import { DebounceInput } from 'react-debounce-input';
 export class Tools extends Component {
 	static propTypes = {
 		createToolRequest: PropTypes.func.isRequired,
@@ -36,6 +36,10 @@ export class Tools extends Component {
 			description: '',
 			tags: ''
 		},
+		search: {
+			term: '',
+			tagsOnly: false
+		},
 		openModalConfirm: false,
 		removeTool: {}
 	};
@@ -43,6 +47,19 @@ export class Tools extends Component {
 		const { getToolsRequest } = this.props;
 		getToolsRequest();
 	}
+	componentDidUpdate(prevProps, prevState) {
+		const { getToolsRequest } = this.props;
+		const { search } = this.state;
+		if (search.term !== prevState.search.term) {
+			getToolsRequest(search);
+		}
+	}
+	handleInputSearchTermChange = e => {
+		this.setState({ search: { ...this.state.search, term: e.target.value } });
+	};
+	handleInputTagsOnlyChange = e => {
+		this.setState({ search: { ...this.state.search, tagsOnly: e.target.checked } });
+	};
 	handleInputChange = e => {
 		this.setState({
 			newTool: { ...this.state.newTool, [e.target.name]: e.target.value }
@@ -71,18 +88,31 @@ export class Tools extends Component {
 	};
 	render() {
 		const { tools, openToolModal, closeToolModal } = this.props;
-		const { newTool, openModalConfirm, removeTool } = this.state;
+		const { newTool, openModalConfirm, removeTool, search } = this.state;
 		return (
 			<Container>
 				<h2>Very Useful Tools to Remember</h2>
 				<ToolsContainerAction>
 					<div>
-						<input type="text" placeholder="search" name="searchTerm" />
-						<input type="checkbox" name="searchTags" />
+						<DebounceInput
+							type="text"
+							placeholder="search"
+							name="term"
+							minLength={2}
+							debounceTimeout={500}
+							value={search.term}
+							onChange={this.handleInputSearchTermChange}
+						/>
+						<input
+							type="checkbox"
+							name="tagsOnly"
+							checked={search.tagsOnly}
+							onChange={this.handleInputTagsOnlyChange}
+						/>
 						search in tags only
 					</div>
 					<Button size="big" onClick={openToolModal}>
-						Add
+						<i className="fas fa-plus" /> Add
 					</Button>
 				</ToolsContainerAction>
 				<ToolsList>
@@ -91,17 +121,19 @@ export class Tools extends Component {
 							<TitleList>
 								<a href={tool.link}>{tool.title}</a>
 								<Button size="small" color="danger" onClick={() => this.handleChangeModalConfirm(tool)}>
-									remover
+									<i className="fas fa-times" />
 								</Button>
 							</TitleList>
 							<p>{tool.description}</p>
-							<TagList>{tool.tags.map(tag => <li key={tag}>#{tag}</li>)}</TagList>
+							<TagList>{tool.tags.map(tag => <li key={`${Math.random()}-${tag}`}>#{tag}</li>)}</TagList>
 						</li>
 					))}
 				</ToolsList>
 				{tools.toolModalOpen && (
 					<Modal>
-						<h1>Add new tool </h1>
+						<h1>
+							<i className="fas fa-plus" /> Add new tool{' '}
+						</h1>
 						<NewToolForm onSubmit={this.handleCreateTool}>
 							<span>Tool Name</span>
 							<input type="text" name="title" value={newTool.title} onChange={this.handleInputChange} />
@@ -121,7 +153,9 @@ export class Tools extends Component {
 								<Button color="gray" onClick={closeToolModal}>
 									Fechar
 								</Button>
-								<Button type="submit">Add tool</Button>
+								<Button type="submit">
+									<i className="fas fa-plus" /> Add tool
+								</Button>
 							</div>
 						</NewToolForm>
 					</Modal>
@@ -135,7 +169,9 @@ export class Tools extends Component {
 								<Button color="gray" onClick={() => this.handleChangeModalConfirm()}>
 									Cancel
 								</Button>
-								<Button onClick={() => this.handleRemoveTool()}>Yes, remove</Button>
+								<Button color="danger" onClick={() => this.handleRemoveTool()}>
+									Yes, remove
+								</Button>
 							</div>
 						</ConfirmContent>
 					</Modal>

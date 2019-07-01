@@ -4,7 +4,10 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	padding: 30px;
-
+	width: 700px;
+	@media (max-width: 690px) {
+		width: 400px;
+	}
 	h2 {
 		font-size: 36px;
 		line-height: 40px;
@@ -21,6 +24,7 @@ export const ToolsContainerAction = styled.div`
 		input[type='text'] {
 			border-radius: 4px;
 			border: 1px solid #ebeaed;
+			background-color: #f5f4f6;
 			font-size: 20px;
 			line-height: 26px;
 			padding: 5px 10px;
@@ -36,10 +40,11 @@ export const ToolsList = styled.ul`
 	list-style: none;
 	> li {
 		background: #fff;
+		border: 1px solid #ebeaed;
 		padding: 20px;
 		margin-bottom: 20px;
 		border-radius: 5px;
-		box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.2);
+		box-shadow: 0 30px 60px -20px #f5f4f6;
 		&:last-child {
 			margin-bottom: 0;
 		}
@@ -54,7 +59,7 @@ export const TitleList = styled.div`
 	justify-content: space-between;
 	margin-bottom: 5px;
 	a {
-		text-decoration: none;
+		text-decoration: underline;
 		color: currentColor;
 		font-weight: 700;
 	}
@@ -62,6 +67,7 @@ export const TitleList = styled.div`
 export const TagList = styled.ul`
 	list-style: none;
 	display: flex;
+	flex-wrap: wrap;
 	padding: 10px 0;
 	> li {
 		margin-right: 10px;
