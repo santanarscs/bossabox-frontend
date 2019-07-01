@@ -18,3 +18,11 @@ export function* createTool({ tool }) {
     console.log(err);
   }
 }
+export function* removeTool({ id }) {
+  try {
+    yield call(api.delete, `tools/${id}`);
+    yield put(ToolsActions.removeToolSuccess(id));
+  } catch (err) {
+    console.log(err);
+  }
+}

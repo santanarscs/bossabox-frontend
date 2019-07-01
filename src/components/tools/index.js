@@ -39,7 +39,9 @@ export class Tools extends Component {
       link: "",
       description: "",
       tags: ""
-    }
+    },
+    openModalConfirm: false,
+    removeTool: {}
   };
   componentDidMount() {
     const { getToolsRequest } = this.props;
@@ -56,9 +58,23 @@ export class Tools extends Component {
     const { newTool } = this.state;
     createToolRequest(newTool);
   };
+  handleChangeModalConfirm = (tool = null) => {
+    this.setState({
+      openModalConfirm: this.state.openModalConfirm ? false : true,
+      removeTool: tool
+    });
+  };
+  handleRemoveTool = () => {
+    const { removeToolRequest } = this.props;
+    const { removeTool } = this.state;
+    if (removeTool) {
+      removeToolRequest(removeTool.id);
+      this.handleChangeModalConfirm();
+    }
+  };
   render() {
     const { tools, openToolModal, closeToolModal } = this.props;
-    const { newTool } = this.state;
+    const { newTool, openModalConfirm, removeTool } = this.state;
     return (
       <Container>
         <h2>Very Useful Tools to Remember</h2>
@@ -77,7 +93,12 @@ export class Tools extends Component {
             <li key={tool.id}>
               <TitleList>
                 <a href={tool.link}>{tool.title}</a>
-                <button type="button">remover</button>
+                <button
+                  type="button"
+                  onClick={() => this.handleChangeModalConfirm(tool)}
+                >
+                  remover
+                </button>
               </TitleList>
               <p>{tool.description}</p>
               <TagList>
@@ -128,6 +149,20 @@ export class Tools extends Component {
                 <button type="submit">Add tool</button>
               </div>
             </form>
+          </Modal>
+        )}
+        {openModalConfirm && (
+          <Modal>
+            <h1>Remove tool</h1>
+            <p>Are you sure want to remove {removeTool.title}</p>
+            <div>
+              <button onClick={() => this.handleChangeModalConfirm()}>
+                Cancel
+              </button>
+              <button onClick={() => this.handleRemoveTool()}>
+                Yes, remove
+              </button>
+            </div>
           </Modal>
         )}
       </Container>
