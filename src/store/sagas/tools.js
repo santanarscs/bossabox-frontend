@@ -13,7 +13,7 @@ export function* getTools({ search }) {
 
 export function* createTool({ tool }) {
 	try {
-		const tags = tool.tags.split(' ').filter(tag => tag !== '');
+		const tags = tool.tags.split(' ').filter(tag => tag !== '') || [];
 		const newTool = { ...tool, tags };
 		const response = yield call(api.post, 'tools', newTool);
 		yield put(ToolsActions.createToolSuccess(response.data));

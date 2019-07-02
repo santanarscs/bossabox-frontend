@@ -3,13 +3,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { Form, Input, Textarea } from '@rocketseat/unform';
+import * as Yup from 'yup';
+
 import Modal from '../Modal';
 
 import ToolsActions from '../../store/ducks/tools';
-import { Container, ToolsContainerAction, ToolsList, TitleList, TagList, NewToolForm, ConfirmContent } from './styles';
+import {
+	Container,
+	ToolsContainerAction,
+	ToolsList,
+	TitleList,
+	TagList,
+	NewToolFormContainer,
+	ConfirmContent
+} from './styles';
 
 import Button from '../../styles/components/Button';
 import { DebounceInput } from 'react-debounce-input';
+
 export class Tools extends Component {
 	static propTypes = {
 		createToolRequest: PropTypes.func.isRequired,
@@ -65,12 +77,11 @@ export class Tools extends Component {
 			newTool: { ...this.state.newTool, [e.target.name]: e.target.value }
 		});
 	};
-	handleCreateTool = e => {
-		e.preventDefault();
+	handleCreateTool = (data, { resetForm }) => {
 		const { createToolRequest } = this.props;
 		const { newTool } = this.state;
 		createToolRequest(newTool);
-		this.setState({ newTool: {} });
+		resetForm();
 	};
 	handleChangeModalConfirm = (tool = null) => {
 		this.setState({
@@ -87,6 +98,11 @@ export class Tools extends Component {
 		}
 	};
 	render() {
+		const schema = Yup.object().shape({
+			title: Yup.string().required('Title is required'),
+			link: Yup.string().required('Link is required'),
+			description: Yup.string().required('Description is required')
+		});
 		const { tools, openToolModal, closeToolModal } = this.props;
 		const { newTool, openModalConfirm, removeTool, search } = this.state;
 		return (
@@ -135,30 +151,37 @@ export class Tools extends Component {
 						<h1>
 							<i className="fas fa-plus" /> Add new tool{' '}
 						</h1>
-						<NewToolForm onSubmit={this.handleCreateTool}>
-							<span>Tool Name</span>
-							<input type="text" name="title" value={newTool.title} onChange={this.handleInputChange} />
-							<span>Tool Link</span>
-							<input type="text" name="link" value={newTool.link} onChange={this.handleInputChange} />
-							<span>Tool description</span>
-							<textarea
-								cols="30"
-								rows="5"
-								name="description"
-								value={newTool.description}
-								onChange={this.handleInputChange}
-							/>
-							<span>Tags</span>
-							<input type="text" name="tags" value={newTool.tags} onChange={this.handleInputChange} />
-							<div>
-								<Button color="gray" onClick={closeToolModal}>
-									Fechar
-								</Button>
-								<Button type="submit">
-									<i className="fas fa-plus" /> Add tool
-								</Button>
-							</div>
-						</NewToolForm>
+						<NewToolFormContainer>
+							<Form onSubmit={this.handleCreateTool} schema={schema}>
+								<label>Tool Name</label>
+								<Input
+									type="text"
+									name="title"
+									value={newTool.title}
+									onChange={this.handleInputChange}
+								/>
+								<label>Tool Link</label>
+								<Input type="text" name="link" value={newTool.link} onChange={this.handleInputChange} />
+								<label>Tool description</label>
+								<Textarea
+									cols="30"
+									rows="5"
+									name="description"
+									value={newTool.description}
+									onChange={this.handleInputChange}
+								/>
+								<label>Tags</label>
+								<Input type="text" name="tags" value={newTool.tags} onChange={this.handleInputChange} />
+								<div>
+									<Button color="gray" onClick={closeToolModal}>
+										Fechar
+									</Button>
+									<Button type="submit">
+										<i className="fas fa-plus" /> Add tool
+									</Button>
+								</div>
+							</Form>
+						</NewToolFormContainer>
 					</Modal>
 				)}
 				{openModalConfirm && (

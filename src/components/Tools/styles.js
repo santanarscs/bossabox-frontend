@@ -77,40 +77,47 @@ export const TagList = styled.ul`
 		}
 	}
 `;
-export const NewToolForm = styled.form`
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	> span {
-		font-size: 20px;
-		line-height: 25px;
-		font-weight: 600;
-		margin-top: 15px;
-	}
-	> input,
-	textarea {
-		height: 40px;
-		padding: 10px;
-		border-radius: 5px;
-		border: 1px solid #ebeaed;
-		background-color: #f5f4f6;
-		color: #170c3a;
-		margin-top: 8px;
-		transition: border 0.15s ease;
-		font-size: 16px;
-		&:focus {
-			border-color: #dedce1;
-		}
-	}
-	textarea {
-		height: auto;
-	}
-	div {
+
+export const NewToolFormContainer = styled.div`
+	form {
 		display: flex;
-		justify-content: flex-end;
-		padding: 10px 0;
-		> button[type='button'] {
-			margin-right: 10px;
+		flex-direction: column;
+		align-items: stretch;
+		> label {
+			font-size: 20px;
+			line-height: 25px;
+			font-weight: 600;
+			margin-top: 15px;
+		}
+		span {
+			font-size: 14px;
+			color: #cc4c4c;
+		}
+		> input,
+		textarea {
+			height: 40px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ebeaed;
+			background-color: #f5f4f6;
+			color: #170c3a;
+			margin-top: 8px;
+			transition: border 0.15s ease;
+			font-size: 16px;
+			&:focus {
+				border-color: #dedce1;
+			}
+		}
+		textarea {
+			height: auto;
+		}
+		div {
+			display: flex;
+			justify-content: flex-end;
+			padding: 10px 0;
+			> button[type='button'] {
+				margin-right: 10px;
+			}
 		}
 	}
 `;
