@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Form, Input, Textarea } from '@rocketseat/unform';
+import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 
 import Modal from '../Modal';
@@ -163,7 +163,8 @@ export class Tools extends Component {
 								<label>Tool Link</label>
 								<Input type="text" name="link" value={newTool.link} onChange={this.handleInputChange} />
 								<label>Tool description</label>
-								<Textarea
+								<Input
+									multiline
 									cols="30"
 									rows="5"
 									name="description"
